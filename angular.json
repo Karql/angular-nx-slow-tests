@@ -2,7 +2,39 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "sample": {
+      "root": "libs/sample",
+      "sourceRoot": "libs/sample/src",
+      "projectType": "library",
+      "prefix": "angular-nx-slow-tests",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/sample/tsconfig.lib.json",
+              "libs/sample/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/sample/jest.config.js",
+            "tsConfig": "libs/sample/tsconfig.spec.json",
+            "setupFile": "libs/sample/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "styleext": "sass"
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -17,5 +49,6 @@
     "@nrwl/schematics:library": {
       "style": "sass"
     }
-  }
+  },
+  "defaultProject": "sample"
 }

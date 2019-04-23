@@ -1,41 +1,20 @@
-# AngularNxSlowTests
+Sample project to demonstrate performance issue with ts-jest (>=23.10.0) on windows
+Looks like problem with resolver?
 
-This project was generated using [Nx](https://nx.dev).
+`yarn`
+`yarn fast-test` - test without imports (5.82s)
+`yarn slow-test` - test with imports (29.61s)
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/nx-logo.png" width="450"></p>
+Normal script with imports works fast
+`yarn normal-script-is-fast`
 
-🔎 **Nx is a set of Angular CLI power-ups for modern development.**
+Previous versions of ts-jest works better.
+Try to change branch to ts-jest-23.1.4 and repeat above steps (it's better 4.78s vs 10.9s)
 
-## Quick Start & Documentation
+On Linux more or less nothing changed
+23.1.4: 3.6s vs +-9s
+24.0.2: 4.7s vs +-9s
 
-[30-minute video showing all Nx features](https://nx.dev/getting-started/what-is-nx)
-
-[Interactive tutorial](https://nx.dev/tutorial/01-create-application)
-
-## Generate your first application
-
-Run `ng g app myapp` to generate an application. When using Nx, you can create multiple applications and libraries in the same CLI workspace.
-
-## Development server
-
-Run `ng serve myapp` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name --project=myapp` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build myapp` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Jest](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Cypress](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Profiling:
+`node --prof node_modules/\@angular/cli/bin/ng test sample --test-file slow-test.spec.ts`
+`node --prof-process isolate-*-v8.log`
